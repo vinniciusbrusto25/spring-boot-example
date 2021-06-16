@@ -1,4 +1,4 @@
-package br.com.example.springmvcapp.controller;
+package test.com.vinicius.orders.controller;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import br.com.example.springmvcapp.model.ProductOrder;
-import br.com.example.springmvcapp.repository.ProductOrderRepository;
+import test.com.vinicius.orders.model.ProductOrder;
+import test.com.vinicius.orders.repository.ProductOrderRepository;
 
 @Controller
 public class HomeController {

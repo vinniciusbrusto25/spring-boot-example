@@ -1,6 +1,6 @@
 /*This class will store our actions.*/
 
-package br.com.example.springmvcapp.controller;
+package test.com.vinicius.orders.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

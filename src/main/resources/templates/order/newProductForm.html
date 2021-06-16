@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head th:replace="~{base :: head}"></head>
+	
+	<body>
+		<div th:replace="~{base :: logo}"></div>
+	
+		<div class="container">
+
+			<div th:replace="~{base :: maintitle('New Order')}"></div>
+			
+            <div class="card mt-3">
+	            <form th:object="${requestNewProductDto}" class="card-body" action="/order/newProduct" method="POST">
+	                <div class="mb-3">
+		                <label for="productName" class="form-label">Product</label>
+		                <input th:field="*{productName}" type="text" class="form-control" required placeholder="Product name">
+		                <small>Type the product name</small>
+		                <div th:errors="*{productName}"></div>
+		            </div>
+	
+	                <div class="mb-3">
+		                <label for="productUrl" class="form-label">Url</label>
+		                <input th:field="*{productUrl}" type="text" class="form-control" th:errorclass="is-invalid" placeholder="Product URL">
+		                <small>Search in some website for a product you wish and paste here.</small>
+		                <div th:errors="*{productUrl}" class="invalid-feedback"></div>
+		            </div>
+	
+		            <div class="mb-3">
+		                <label for="imageUrl" class="form-label">Image</label>
+		                <input th:field="*{imageUrl}" type="text" class="form-control" th:errorclass="is-invalid" placeholder="Image URL">
+		                <small>Paste here the image url</small>
+		                <div th:errors="*{imageUrl}" class="invalid-feedback"></div>
+	                </div>
+	
+	                <div class="mb-3">
+		                <label for="description" class="form-label">Description</label>
+		                <textarea th:field="*{description}" class="form-control" placeholder="Add some details to make it easier for the buyer."></textarea>
+					</div>
+	
+	                <button type="submit" class="btn btn-primary">Submit</button>
+	            </form>
+            </div>
+		</div>
+	</body>
+</html>

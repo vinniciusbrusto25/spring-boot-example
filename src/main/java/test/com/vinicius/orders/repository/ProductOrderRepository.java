@@ -1,9 +1,9 @@
-package br.com.example.springmvcapp.repository;
+package test.com.vinicius.orders.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.com.example.springmvcapp.model.ProductOrder;
+import test.com.vinicius.orders.model.ProductOrder;
 
 /*
  * The inheritance of JpaRepository interface provides all

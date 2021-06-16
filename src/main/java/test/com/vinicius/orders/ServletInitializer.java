@@ -1,4 +1,4 @@
-package br.com.example.springmvcapp;
+package test.com.vinicius.orders;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
