@@ -11,10 +11,17 @@
 		
 			<nav class="navbar navbar-expand navbar-light bg-light d-flex justify-content-between mb-3">
 				<div class="navbar-nav">
-					<a class="nav-item nav-link active" href="">All</a>
-					<a class="nav-item nav-link" href="">Waiting</a>
-					<a class="nav-item nav-link" href="">Approved</a>
-					<a class="nav-item nav-link" href="">Delivered</a>
+				
+					<!-- "classappend" is the way of Thymeleaf append a CSS class to the 
+					HTML component. Looks like something weird, but that is ok. 
+					Here we are making the front-end by the back-end. So, using
+					a conditional thymeleaf command, we define the active
+					HTML component. -->
+					
+					<a th:classappend="${status} == null ? 'active'" class="nav-item nav-link" href="/home">All</a>
+					<a th:classappend="${status} == 'waiting' ? 'active'" class="nav-item nav-link" href="/home/waiting">Waiting</a>
+					<a th:classappend="${status} == 'approved' ? 'active'" class="nav-item nav-link" href="/home/approved">Approved</a>
+					<a th:classappend="${status} == 'delivered' ? 'active'" class="nav-item nav-link" href="/home/delivered">Delivered</a>
 				</div>
 				<a href="order/newProductForm"><button class="btn btn-outline-secondary my-2 my-sm-0">New</button></a>
 			</nav>
@@ -43,8 +50,8 @@
 						  -->
 						<div class="col-12 col-sm-8 mb-3">
 							<div class="row">
-								<div class="col-md-5">Value: <span th:text="${product.value}"></span></div>
-								<div class="col-md-7">Delivery date: <span th:text="${product.deliveryDate}"></span></div>
+								<div class="col-md-5">Value: <span th:if="${product.value} != null" th:text="${'R$ ' + #numbers.formatDecimal(product.value,3,'POINT',2,'COMMA')}"></span></div>
+								<div class="col-md-7">Delivery date: <span th:text="${#temporals.format(product.deliveryDate, 'dd/MM/yyyy')}"></span></div>
 							</div>
 
 							<div>Product</div>

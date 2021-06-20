@@ -1,8 +1,11 @@
 package test.com.vinicius.orders.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import test.com.vinicius.orders.enums.ProductOrderStatus;
 import test.com.vinicius.orders.model.ProductOrder;
 
 /*
@@ -14,5 +17,9 @@ import test.com.vinicius.orders.model.ProductOrder;
 
 @Repository
 public interface ProductOrderRepository extends JpaRepository<ProductOrder, Long> {
+
+	List<ProductOrder> findByOrderStatus(ProductOrderStatus status);
+
+	
 	
 }
