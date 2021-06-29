@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head th:replace="~{base :: head}"></head>
+	
+	<body>
+		<div th:replace="~{base :: logo}"></div>
+		
+		<div class="container">
+		
+			<div th:replace="~{base :: maintitle('My Orders')}"></div>
+		
+			<nav class="navbar navbar-expand navbar-light bg-light d-flex justify-content-between mb-3">
+				<div class="navbar-nav">
+				
+					<!-- "classappend" is the way of Thymeleaf append a CSS class to the 
+					HTML component. Looks like something weird, but that is ok. 
+					Here we are making the front-end by the back-end. So, using
+					a conditional thymeleaf command, we define the active
+					HTML component. -->
+					
+					<a th:classappend="${status} == null ? 'active'" class="nav-item nav-link" th:href="@{/user/orders}">All</a>
+					<a th:classappend="${status} == 'waiting' ? 'active'" class="nav-item nav-link" th:href="@{/user/orders/waiting}">Waiting</a>
+					<a th:classappend="${status} == 'approved' ? 'active'" class="nav-item nav-link" th:href="@{/user/orders/approved}">Approved</a>
+					<a th:classappend="${status} == 'delivered' ? 'active'" class="nav-item nav-link" th:href="@{/user/orders/delivered}">Delivered</a>
+				</div>
+				<a href="/order/newProductForm"><button class="btn btn-outline-secondary my-2 my-sm-0">New</button></a>
+			</nav>
+		
+			<div class="card mb-3" th:each="product : ${productList}">
+				
+				<th:block th:switch="${product.orderStatus.name()}">
+					<div th:case="'WAITING'" class="card-header alert-warning" th:text=${product.productName}></div>
+					<div th:case="'APPROVED'" class="card-header alert-success" th:text=${product.productName}></div>
+					<div th:case="'DELIVERED'" class="card-header alert-dark" th:text=${product.productName}></div>
+				</th:block>
+				
+				<div class="card-body">
+					<div class="row">
+						
+						<!-- Notice that in Bootstrap, we have prefixes to reference some 
+						pixels values, like:
+						
+								col means "Extra small" <576px
+								col-sm means "Small" >= 576px
+								col-md means "Medium" >= 768px
+								col-lg means "Large" >= 992px
+								col-xl means "XLarge" >= 1200px
+								
+							Each row have 12 columns.
+						  -->
+						<div class="col-12 col-sm-8 mb-3">
+							<div class="row">
+								<div class="col-md-5">Value: <span th:if="${product.value} != null" th:text="${'R$ ' + #numbers.formatDecimal(product.value,3,'POINT',2,'COMMA')}"></span></div>
+								<div class="col-md-7">Delivery date: <span th:text="${#temporals.format(product.deliveryDate, 'dd/MM/yyyy')}"></span></div>
+							</div>
+
+							<div>Product</div>
+							<div><input class="form-control" th:value="${product.productUrl}" value="product url"></div>
+							<div>Description</div>
+							<div><textarea class="form-control" th:text="${product.description}"></textarea></div>
+						</div>
+						<div class="col-12 col-sm-4">
+							<div>
+								<img class="img-thumbnail" th:src="${product.imageUrl}">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

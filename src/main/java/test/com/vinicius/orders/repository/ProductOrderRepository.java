@@ -2,7 +2,10 @@ package test.com.vinicius.orders.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import test.com.vinicius.orders.enums.ProductOrderStatus;
@@ -18,8 +21,12 @@ import test.com.vinicius.orders.model.ProductOrder;
 @Repository
 public interface ProductOrderRepository extends JpaRepository<ProductOrder, Long> {
 
-	List<ProductOrder> findByOrderStatus(ProductOrderStatus status);
+	List<ProductOrder> findByOrderStatus(ProductOrderStatus status, Pageable pages);
 
-	
+	@Query("SELECT p FROM ProductOrder p JOIN p.user u WHERE u.username = :username")
+	List<ProductOrder> findAllByUsername(@Param("username") String username);
+
+	@Query("SELECT p FROM ProductOrder p JOIN p.user u WHERE u.username = :username AND p.orderStatus = :status")
+	List<ProductOrder> findByOrderStatusAndUser(@Param("status") ProductOrderStatus status, @Param("username") String username);
 	
 }

@@ -4,8 +4,6 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,30 +16,53 @@ import test.com.vinicius.orders.model.ProductOrder;
 import test.com.vinicius.orders.repository.ProductOrderRepository;
 
 @Controller
-@RequestMapping("/home")
-public class HomeController {
-	
+@RequestMapping("user")
+public class UserController {
+
 	@Autowired
 	private ProductOrderRepository productOrderRepository;
 	
 	/**
 	 * "Principal" argument provides user details information, like the user name.
-	 * "Sort" is used to use the "Order by" clause.
-	 * "PageRequest" provides a Pageable object.
 	 * 
 	 * @param model
 	 * @param principal
 	 * @return
 	 */
 	
-	@GetMapping
+	@GetMapping("orders")
 	public String home(Model model, Principal principal) {
-		Sort sort = Sort.by("deliveryDate").descending();
-		PageRequest pages = PageRequest.of(0, 1, sort);
-		
-		List<ProductOrder> productsList = productOrderRepository.findByOrderStatus(ProductOrderStatus.DELIVERED, pages);
+		List<ProductOrder> productsList = productOrderRepository.findAllByUsername(principal.getName());
 		model.addAttribute("productList", productsList);
-		return "home";
+		return "user/home";
 	}
-
+	
+	/**
+	 * Variable path usage example. {status} is a variable
+	 * that user defines its value by the request method.
+	 * 
+	 * @param model
+	 * @return view to be showed.
+	 */
+	
+	@GetMapping("orders/{status}")
+	public String byStatus(@PathVariable("status") String status, Model model, Principal principal) {
+		List<ProductOrder> productsList = productOrderRepository.findByOrderStatusAndUser(ProductOrderStatus.valueOf(status.toUpperCase()), principal.getName());
+		model.addAttribute("productList", productsList);
+		model.addAttribute("status", status);
+		return "user/home";
+	}
+	
+	/**
+	 * Exception treatment of bad requests. In this case, it is redirecting to 
+	 * home page.
+	 * 
+	 * @return
+	 */
+	
+	@ExceptionHandler(IllegalArgumentException.class)
+	public String onError() {
+		return "redirect:/user/home";
+	}
+	
 }
