@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head th:replace="~{base :: head}"></head>
+	
+	<body onload="onLoad()">
+		<div th:replace="~{base :: logo}"></div>
+		
+		<div class="container" id="offers">
+		
+			<div th:replace="~{base :: maintitle('Make your Offer!')}"></div>
+		
+			<div class="card mb-3" v-for="productOrder in orders">
+				<div class="card-header alert-dark">{{productOrder.productName}}</div>
+				
+				<div class="card-body">
+					<div class="row">
+						
+						<!-- Notice that in Bootstrap, we have prefixes to reference some 
+						pixels values, like:
+						
+								col means "Extra small" <576px
+								col-sm means "Small" >= 576px
+								col-md means "Medium" >= 768px
+								col-lg means "Large" >= 992px
+								col-xl means "XLarge" >= 1200px
+								
+							Each row have 12 columns.
+						  -->
+						<div class="col-12 col-sm-8 mb-3">
+							<div class="row">
+								<div class="col-md-5">Value: <input/></div>
+								<div class="col-md-7">Delivery date: <input/></div>
+							</div>
+
+							<div>Product</div>
+							<div><a v-bind:href="productOrder.productUrl">{{productOrder.productName}}</a></div>
+							<div>Description</div>
+							<div><textarea class="form-control">{{productOrder.description}}</textarea></div>
+						</div>
+						<div class="col-12 col-sm-4">
+							<div>
+								<img class="img-thumbnail" v-bind:src="productOrder.imageUrl">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			/*Using Vue JS and Axios*/
+
+			function onLoad() {
+				var app = new Vue(
+					{
+						el : '#offers',
+						data : {
+							orders : [] 
+						},
+						mounted () {
+						    axios
+						      .get('http://localhost:8080/api/orders/waiting')
+						      .then(response => (this.orders = response.data))
+						}
+					}
+				)
+			}
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	</body>
+</html>

@@ -12,8 +12,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import test.com.vinicius.orders.enums.ProductOrderStatus;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 public class ProductOrder {
 
@@ -32,6 +36,7 @@ public class ProductOrder {
 	private ProductOrderStatus orderStatus;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
 	private User user;
 
 	public User getUser() {
@@ -104,6 +109,14 @@ public class ProductOrder {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

@@ -2,6 +2,7 @@ package test.com.vinicius.orders.repository;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,6 +22,7 @@ import test.com.vinicius.orders.model.ProductOrder;
 @Repository
 public interface ProductOrderRepository extends JpaRepository<ProductOrder, Long> {
 
+	@Cacheable("ordersByStatus")
 	List<ProductOrder> findByOrderStatus(ProductOrderStatus status, Pageable pages);
 
 	@Query("SELECT p FROM ProductOrder p JOIN p.user u WHERE u.username = :username")
