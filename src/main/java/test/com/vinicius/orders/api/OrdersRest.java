@@ -21,7 +21,7 @@ public class OrdersRest {
 	private ProductOrderRepository orderRepository;
 	
 	@GetMapping("waiting")
-	public List<ProductOrder> getOrdersWaiting() {
+	public List<ProductOrder> ordersWaiting() {
 		Sort sort = Sort.by("id").descending();
 		PageRequest pg = PageRequest.of(0, 10, sort);
 		
